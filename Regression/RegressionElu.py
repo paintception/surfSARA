@@ -66,7 +66,7 @@ def plots(history):
 
 	print "Saving Results"
 
-def run_model():
+def run_model(sgd):
 	# create model
 	model = Sequential()
 	model.add(Dense(1,input_dim=dimof_input, init='normal', activation='elu'))
@@ -87,7 +87,7 @@ def main():
 	    sgd = SGD(lr=learning_r, decay=1e-6, momentum=1, nesterov=True)
 	    print "Training for lr: ", learning_r
 
-        model = run_model()
+        model = run_model(sgd)
         X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.10, random_state=42)
         history = model.fit(X_train,y_train, nb_epoch=300, batch_size=50, verbose=1, validation_data=(X_test, y_test))
         scores = model.evaluate(X,y)
