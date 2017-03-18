@@ -69,10 +69,10 @@ def plots(history):
 def run_model(sgd):
 	# create model
 	model = Sequential()
-	model.add(Dense(1,input_dim=dimof_input, init='normal', activation='elu'))
-	model.add(Dense(2048, init='normal', activation='elu'))
-	model.add(Dense(2048, init='normal', activation='elu'))
-	model.add(Dense(2048, init='normal', activation='elu'))
+	model.add(Dense(1,input_dim=dimof_input, init='normal', activation='relu'))
+	model.add(Dense(2048, init='normal', activation='relu'))
+	model.add(Dense(2048, init='normal', activation='relu'))
+	model.add(Dense(2048, init='normal', activation='relu'))
 	model.add(Dense(1, init='normal', activation='linear'))
 	model.compile(loss='mse', optimizer=sgd, metrics=['accuracy'])
 	
