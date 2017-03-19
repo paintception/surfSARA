@@ -2,9 +2,12 @@ import os
 import numpy as np
 import cv2
 
+from sklearn import preprocessing
+
 def write_pic(data, path, name):
 	
 	tmp=np.asarray(data, dtype=np.uint8)
+	tmp = cv2.resize(tmp, (64, 64))	#Noise added to get bigger pictures
 	cv2.imwrite(path+name+'.png', tmp)
 
 	print "Image Saved"
@@ -26,25 +29,14 @@ def fix_pic(data):
 
 def main():
 
-	X = []
-	y = []
+	print "Reading the data"
+
+	X = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Positions.npy')
+	y = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Labels.npy')
+
+	X = preprocessing.scale(X)
+
 	General_X = []
-	ind=1
-
-	with open("/home/matthia/Desktop/MSc.-Thesis/Datasets/Newest.txt", 'r') as f:
-
-		print "Reading the Data"
-
-		for line in f:
-			record = line.split(";")
-			pieces = [eval(x) for x in record[0:12]]
-			piece = [item for sublist in pieces for item in sublist]
-			piece = [item for sublist in piece for item in sublist]	
-
-			X.append(piece)
-			y.append(float(record[12][:-2]))
-
-	X = np.asarray(X)
 
 	for i in X:
 		g = i.reshape((12,64))
@@ -66,14 +58,24 @@ def main():
 		evaluation = y[ind]
 		pos=fix_pic(pos)
 		
+		if evaluation == "Equal":
+			tmp_path=path+"Equal/"
+		elif evaluation == "WW":
+			tmp_path=path+"WW/"
+		elif evaluation == "BW":
+			tmp_path=path+"BW/"
+		
+		write_pic(pos, tmp_path, 'position'+str(ind))
+		
+		"""
 		if evaluation >= - 1 and evaluation <=1:
 			tmp_path=path+"Equal/"
 		elif evaluation > 1:
 			tmp_path=path+"WW/"
 		elif evaluation < 1:
 			tmp_path=path+"BW/"
-		
-		write_pic(pos, tmp_path, 'position'+str(ind))
+		"""
+		#write_pic(pos, tmp_path, 'position'+str(ind))
 		"""
 		if evaluation >= - 0.5 and evaluation < 0.5:
 			tmp_path=path+"Equal/"
@@ -90,8 +92,6 @@ def main():
 		elif evaluation < -4:
 			tmp_path=path+"BW/"
 		"""
-		
-
 if __name__ == '__main__':
 	main()
 	
