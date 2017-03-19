@@ -24,38 +24,15 @@ from sklearn.model_selection import train_test_split
 seed = 7
 np.random.seed(seed)
 
-X = []
-y = []
-
 print "Reading the data"
 
-with open("/home/matthia/Desktop/MSc.-Thesis/Datasets/Newest.txt",'r') as f:
-	for line in f:
-		record = line.split(";")
-		pieces = [eval(x) for x in record[0:12]]
-		piece = [item for sublist in pieces for item in sublist]
-		piece = [item for sublist in piece for item in sublist]	
-		X.append(piece)
-		y.append(float(record[12][:-2]))
+X = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Positions.npy')
+y = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Labels.npy')
 
-print "Classification Conversion"
-
-X = np.asarray(X)
 X = preprocessing.scale(X)
-
 dimension_input = X.shape[1]
 
-new_y = []
-
-for evalation in y:
-	if evalation >= - 1 and evalation <= 1:
-		new_y.append("Equal")
-	elif evalation > 1:
-		new_y.append("WW")
-	elif evalation < 1:
-		new_y.append("BW")
-
-new_y = np.asarray(new_y)
+new_y = np.asarray(y)
 
 encoder = LabelEncoder()
 encoder.fit(new_y)

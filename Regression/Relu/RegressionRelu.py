@@ -23,24 +23,22 @@ from keras.utils.visualize_util import plot
 seed = 7
 numpy.random.seed(seed)
 
-X = []
-y = []
+print "Reading the data"
 
-with open("", 'r') as f:
-	for line in f:
-		record = line.split(";")
-		pieces = [eval(x) for x in record[0:12]]
-		piece = [item for sublist in pieces for item in sublist]
-		piece = [item for sublist in piece for item in sublist]	
-		X.append(piece)
-		y.append(float(record[12][:-2]))
-
-X = np.asarray(X)
-y = np.asarray(y)
+X = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Positions.npy')
+y = np.load('/home/matthia/Desktop/MSc.-Thesis/Datasets/Numpy/Labels.npy')
 
 X = preprocessing.scale(X)
+dimension_input = X.shape[1]
 
-dimof_input = X.shape[1]
+new_y = np.asarray(y)
+
+encoder = LabelEncoder()
+encoder.fit(new_y)
+encoded_y = encoder.transform(new_y)
+dummy_y = np_utils.to_categorical(encoded_y)
+
+print "Finished reading the data: ready for the MLP"
 
 def plots(history):
 	
