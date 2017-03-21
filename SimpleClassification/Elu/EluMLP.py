@@ -41,7 +41,6 @@ dummy_y = np_utils.to_categorical(encoded_y)
 
 print "Finished reading the data: ready for the MLP"
 
-
 def plots(history):
 	
 	f1 = plt.figure(1)
