@@ -101,7 +101,7 @@ tf.app.flags.DEFINE_string('summaries_dir', './NN_param/retrain_logs',
                           """Where to save summary logs for TensorBoard.""")
 
 # Details of the training configuration.
-tf.app.flags.DEFINE_integer('how_many_training_steps', 2000,
+tf.app.flags.DEFINE_integer('how_many_training_steps', 200,
                             """How many training steps to run before ending.""")
 tf.app.flags.DEFINE_float('learning_rate', 0.01,
                           """How large a learning rate to use when training.""")
@@ -876,7 +876,6 @@ def main(_):
   init = tf.initialize_all_variables()
   sess.run(init)
 
-  plt.ion()
   train_acc_list=[]
   cross_entropy_list=[]
   validation_list=[]
@@ -961,20 +960,19 @@ def main(_):
   with gfile.FastGFile(FLAGS.output_labels, 'w') as f:
     f.write('\n'.join(image_lists.keys()) + '\n')
 
-
   plt.figure("cross_entropy")
   plt.plot(cross_entropy_list)
-  plt.show()
-
+  plt.legend('Cross Entropy', loc='upper right')
+  plt.savefig('/home/matthia/Desktop/accuracy.jpg')
+  
   plt.title('Model Accuracy')
   plt.ylabel('Accuracy')
   plt.xlabel('Epoch')
-  plt.plot()
-  plt.plot( train_acc_list)
+  plt.plot(train_acc_list)
   plt.plot(validation_list)
+  plt.legend(['Training', 'Validation'], loc='upper left')
+  plt.savefig('/home/matthia/Desktop/accuracy.jpg')
   plt.show()
-
-
 
 if __name__ == '__main__':
   tf.app.run()
